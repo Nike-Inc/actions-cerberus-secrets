@@ -29,23 +29,28 @@ export default class Cerberus {
 
   readToEnv(sdbPath: string, mapKeyVariable: any) {
     core.debug(`Reading sdb ${sdbPath}`)
-    this.client.getSecureData(sdbPath).then(secrets => {
-      core.debug(`Received secrets in sdb ${sdbPath}`)
-      Object.keys(mapKeyVariable).forEach(requestedKeyname => {
-        core.debug(`Looking for ${requestedKeyname}`)
-        if (secrets[requestedKeyname]) {
-          core.debug(`Found ${requestedKeyname}`)
-          core.setSecret(secrets[requestedKeyname])
-          core.exportVariable(
-            mapKeyVariable[requestedKeyname],
-            secrets[requestedKeyname]
-          )
-        } else {
-          core.warning(
-            `Key ${requestedKeyname} NOT FOUND. Not setting into environment`
-          )
-        }
+    this.client
+      .getSecureData(sdbPath)
+      .then(secrets => {
+        core.debug(`Received secrets in sdb ${sdbPath}`)
+        Object.keys(mapKeyVariable).forEach(requestedKeyname => {
+          core.debug(`Looking for ${requestedKeyname}`)
+          if (secrets[requestedKeyname]) {
+            core.debug(`Found ${requestedKeyname}`)
+            core.setSecret(secrets[requestedKeyname])
+            core.exportVariable(
+              mapKeyVariable[requestedKeyname],
+              secrets[requestedKeyname]
+            )
+          } else {
+            core.warning(
+              `Key ${requestedKeyname} NOT FOUND. Not setting into environment`
+            )
+          }
+        })
       })
-    })
+      .catch(ex => {
+        core.setFailed(ex.message)
+      })
   }
 }

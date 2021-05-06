@@ -10,14 +10,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run Cerberus Action
-        uses: '.'
+        uses: ./
         id: run-cerberus
         env:
           CERBERUS_TOKEN: ${{ secrets.CERBERUS_TOKEN }}
         with:
           cerberusUrl: ${{ secrets.CERBERUS_URL }}
           cerberusRegion: ${{ secrets.CERBERUS_REGION }}
-          sdbPath: 'app/cdservice/cicduser'
+          sdbPath: 'shared/github-actions-example/exampleapp'
           sdbKeynameVariableMap: '{"username": "MY_USERNAME", "password": "MY_PASSWORD"}'
       - name: Verify Variables in ENV
         env:

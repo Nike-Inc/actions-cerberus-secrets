@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run Cerberus Action
-        uses: '.'
+        uses: ./
         id: run-cerberus
         with:
           cerberusUrl: ${{ secrets.CERBERUS_URL }}
