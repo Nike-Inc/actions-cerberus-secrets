@@ -1,15 +1,16 @@
 # Example workflow to demonstrate the action usage
+name: 'example-with-iam-role'
 on: [workflow_dispatch]
 
 jobs:
   example:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted # A self hosted runner which already assumes the required IAM role
     name: Using Cerberus
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run Cerberus Action
-        uses: Nike-Inc/actions-cerberus-secrets
+        uses: '.'
         id: run-cerberus
         with:
           cerberusUrl: ${{ secrets.CERBERUS_URL }}
