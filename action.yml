@@ -1,11 +1,19 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'cerberus-secrets'
+description: 'GitHub Actions to read secrets from Cerberus'
+author: 'James Michael'
 inputs:
-  milliseconds: # change this
+  cerberusUrl:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'Cerberus SDB path from where a secret to be read'
+  cerberusRegion:
+    required: false
+    description: 'Cerberus Region to authenticate with'
+  sdbPath:
+    required: true
+    description: 'Cerberus SDB path from where a secret to be read'
+  sdbKeynameVariableMap:
+    required: true
+    description: 'Cerberus SDB keys and target environment variable names eg: [{"id": "ID", "name": "NAME", "url": "URL"}]'
 runs:
   using: 'node12'
   main: 'dist/index.js'

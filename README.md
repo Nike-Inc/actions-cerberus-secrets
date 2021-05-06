@@ -1,20 +1,34 @@
-<p align="center">
-  <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
-</p>
+# GitHub Actions for reading secrets from Cerberus
+This GitHub Action helps users to define secrets that stored in [Cerberus](https://engineering.nike.com/cerberus/) to environment variables.
 
-# Create a JavaScript Action using TypeScript
+# Usage
+Usage for this action in workflow.
+```yaml
+steps:
+- name: Read secrets from Cerberus to ENV
+  uses: Nike-Inc/actions-cerberus-secrets
+  with:
+   cerberusUrl: 'https://prod.cerberus.example.com'
+   cerberusRegion: 'us-west-2'
+   sdbPath: 'app/myapplication/database'
+   sdbKeynameVariableMap: '{"username": "DB_USERNAME", "password": "DB_PASSWORD"}'
+- name: Demonstrate use of Cerberus secrets
+  run: 'mydbscript.bash $DB_USERNAME $DB_PASSWORD'
+```
+Please note that `sdbKeynameVariableMap` is a JSON represented as string. 
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+# AWS IAM Role
+Users need AWS IAM Role with required access permissions to communicate with Cerberus. It is greatly recommend to use IAM Role from the runner for this purpose.
+Please refer [Cerberus User Guide](https://engineering.nike.com/cerberus/docs/) for more information.
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+# Action Inputs and Environment Values
+`cerberusUrl` : Required. Cerberus server URL from where secrets should be read. Example: 'https://prod.cerberus.example.com'  
+`cerberusRegion` : Required. AWS Region to use or where Cerberus is hosted. Example: 'us-west-2'  
+`sdbPath` : Required. Path to the safe deposit box. Example: 'app/myapplication/database'  
+`sdbKeynameVariableMap` : Required. Json string representing the key name in cerberus and the corresponding environment variable name where the secret should be made available. Example: '{"username": "DB_USERNAME", "password": "DB_PASSWORD"}'  
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
-
-## Create an action from this template
-
-Click the `Use this Template` and provide the new repo details for your action
-
-## Code in Main
+Secrets will be in environment values. And these environment values are masked with ***. So never be revealed.
+## Development environment
 
 Install the dependencies  
 ```bash
@@ -29,44 +43,7 @@ $ npm run build && npm run package
 Run the tests :heavy_check_mark:  
 ```bash
 $ npm test
-
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-
-...
 ```
-
-## Change action.yml
-
-The action.yml contains defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
 
 ## Publish to a distribution branch
 
@@ -83,21 +60,3 @@ $ git push origin releases/v1
 Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
 
 Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
-
-```yaml
-uses: ./
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
-
-## Usage:
-
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action

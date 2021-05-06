@@ -1,0 +1,22 @@
+# Example workflow to demonstrate the action usage
+on: [workflow_dispatch]
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    name: Using Cerberus
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Cerberus Action
+        uses: Nike-Inc/actions-cerberus-secrets
+        id: run-cerberus
+        with:
+          cerberusUrl: ${{ secrets.CERBERUS_URL }}
+          cerberusRegion: ${{ secrets.CERBERUS_REGION }}
+          sdbPath: 'app/cdservice/cicduser'
+          sdbKeynameVariableMap: '{"username": "MY_USERNAME", "password": "MY_PASSWORD"}'
+      - name: Verify Variables in ENV
+        env:
+          TEST_STEP_VAR: 'ThisIsATestString'
+        run: 'echo $MY_USERNAME && echo $MY_PASSWORD && echo $TEST_STEP_VAR'
