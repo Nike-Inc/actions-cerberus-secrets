@@ -15,7 +15,7 @@ Secrets will be available as environment variables. These environment values wou
 | `cerberusUrl`           | Required. Cerberus server URL from where secrets should be read. Example: 'https://prod.cerberus.example.com'                                                                                                            |
 | `cerberusRegion`        | Required. AWS Region to use or where Cerberus is hosted. Example: 'us-west-2'                                                                                                                                            |
 | `sdbPath`               | Required. Path to the safe deposit box. Example: 'app/myapplication/database'                                                                                                                                            |
-| `sdbKeynameVariableMap` | Required. Json string representing the key name in cerberus and the corresponding environment variable name where the secret should be made available. Example: '{"username": "DB_USERNAME", "password": "DB_PASSWORD"}' |
+| `sdbEnvVariableMapping` | Required. Json string representing the key name in cerberus and the corresponding environment variable name where the secret should be made available. Example: '{"username": "DB_USERNAME", "password": "DB_PASSWORD"}' |
 
 **Note:** `CERBERUS_TOKEN` environment variable can be used to override normal authentication with cerberus.
 
@@ -31,7 +31,7 @@ steps:
       cerberusUrl: 'https://prod.cerberus.example.com'
       cerberusRegion: 'us-west-2'
       sdbPath: 'app/myapplication/database'
-      sdbKeynameVariableMap: '{"username": "DB_USERNAME", "password": "DB_PASSWORD"}'
+      sdbEnvVariableMapping: '{"username": "DB_USERNAME", "password": "DB_PASSWORD"}'
   - name: Demonstrate use of Cerberus secrets
     run: 'mydbscript.bash $DB_USERNAME $DB_PASSWORD'
 ```

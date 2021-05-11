@@ -134,12 +134,12 @@ function run() {
             const cerberusUrl = core.getInput('cerberusUrl');
             const cerberusRegion = core.getInput('cerberusRegion');
             const sdbPath = core.getInput('sdbPath');
-            const sdbKeynameVariableMap = core.getInput('sdbKeynameVariableMap');
+            const sdbEnvVariableMapping = core.getInput('sdbEnvVariableMapping');
             core.info(`Using Cerberus : ${cerberusUrl} in Region ${cerberusRegion}`);
             core.info(`Reading SDB : ${sdbPath}`);
-            core.info(`Looking for ${sdbKeynameVariableMap}`);
-            core.debug('Converting given sdbKeynameVariableMap to JSON object');
-            const mapKeyVariable = JSON.parse(sdbKeynameVariableMap);
+            core.info(`Looking for ${sdbEnvVariableMapping}`);
+            core.debug('Converting given sdbEnvVariableMapping to JSON object');
+            const mapKeyVariable = JSON.parse(sdbEnvVariableMapping);
             const cerberus = new cerberus_1.default(cerberusUrl, cerberusRegion, true);
             cerberus.readToEnv(sdbPath, mapKeyVariable);
         }

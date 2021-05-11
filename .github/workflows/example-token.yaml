@@ -18,7 +18,7 @@ jobs:
           cerberusUrl: ${{ secrets.CERBERUS_URL }}
           cerberusRegion: ${{ secrets.CERBERUS_REGION }}
           sdbPath: 'shared/github-actions-example/exampleapp'
-          sdbKeynameVariableMap: '{"username": "MY_USERNAME", "password": "MY_PASSWORD"}'
+          sdbEnvVariableMapping: '{"username": "MY_USERNAME", "password": "MY_PASSWORD"}'
       - name: Verify Variables in ENV
         env:
           TEST_STEP_VAR: 'ThisIsATestString'

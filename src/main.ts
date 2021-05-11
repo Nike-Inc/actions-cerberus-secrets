@@ -16,14 +16,14 @@ async function run(): Promise<void> {
     const cerberusUrl: string = core.getInput('cerberusUrl')
     const cerberusRegion: string = core.getInput('cerberusRegion')
     const sdbPath: string = core.getInput('sdbPath')
-    const sdbKeynameVariableMap: string = core.getInput('sdbKeynameVariableMap')
+    const sdbEnvVariableMapping: string = core.getInput('sdbEnvVariableMapping')
 
     core.info(`Using Cerberus : ${cerberusUrl} in Region ${cerberusRegion}`)
     core.info(`Reading SDB : ${sdbPath}`)
-    core.info(`Looking for ${sdbKeynameVariableMap}`)
+    core.info(`Looking for ${sdbEnvVariableMapping}`)
 
-    core.debug('Converting given sdbKeynameVariableMap to JSON object')
-    const mapKeyVariable = JSON.parse(sdbKeynameVariableMap)
+    core.debug('Converting given sdbEnvVariableMapping to JSON object')
+    const mapKeyVariable = JSON.parse(sdbEnvVariableMapping)
 
     const cerberus = new Cerberus(cerberusUrl, cerberusRegion, true)
     cerberus.readToEnv(sdbPath, mapKeyVariable)

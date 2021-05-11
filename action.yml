@@ -11,7 +11,7 @@ inputs:
   sdbPath:
     required: true
     description: 'Cerberus SDB path from where a secret to be read'
-  sdbKeynameVariableMap:
+  sdbEnvVariableMapping:
     required: true
     description: 'Cerberus SDB keys and target environment variable names eg: [{"id": "ID", "name": "NAME", "url": "URL"}]'
 runs:
