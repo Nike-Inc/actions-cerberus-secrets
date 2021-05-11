@@ -13,9 +13,9 @@ Secrets will be available as environment variables. These environment values wou
 | Parameter               | Description                                                                                                                                                                                                              |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `cerberusUrl`           | Required. Cerberus server URL from where secrets should be read. Example: 'https://prod.cerberus.example.com'                                                                                                            |
-| `cerberusRegion`        | Required. AWS Region to use or where Cerberus is hosted. Example: 'us-west-2'                                                                                                                                            |
 | `sdbPath`               | Required. Path to the safe deposit box. Example: 'app/myapplication/database'                                                                                                                                            |
 | `sdbEnvVariableMapping` | Required. Json string representing the key name in cerberus and the corresponding environment variable name where the secret should be made available. Example: '{"username": "DB_USERNAME", "password": "DB_PASSWORD"}' |
+| `cerberusRegion`        | Optional. AWS Region to use for authentication. Action will use AWS Metadata URL to fetch the runner's region. When not available or error fetching, region is default to `us-east-1`. Example: 'us-west-2'              |
 
 **Note:** `CERBERUS_TOKEN` environment variable can be used to override normal authentication with cerberus.
 

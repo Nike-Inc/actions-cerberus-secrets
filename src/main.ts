@@ -9,14 +9,19 @@
 
 import * as core from '@actions/core'
 import Cerberus from './cerberus'
+import {getRunnerRegion} from './utils'
 
 async function run(): Promise<void> {
   try {
     core.debug('Gathering all inputs')
     const cerberusUrl: string = core.getInput('cerberusUrl')
-    const cerberusRegion: string = core.getInput('cerberusRegion')
+    const cerberusUserInputRegion: string = core.getInput('cerberusRegion')
     const sdbPath: string = core.getInput('sdbPath')
     const sdbEnvVariableMapping: string = core.getInput('sdbEnvVariableMapping')
+
+    const cerberusRegion = cerberusUserInputRegion
+      ? cerberusUserInputRegion
+      : await getRunnerRegion('us-east-1')
 
     core.info(`Using Cerberus : ${cerberusUrl} in Region ${cerberusRegion}`)
     core.info(`Reading SDB : ${sdbPath}`)
