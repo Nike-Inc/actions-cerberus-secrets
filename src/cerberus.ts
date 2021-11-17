@@ -11,6 +11,7 @@
 /* eslint-disable github/no-then */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable i18n-text/no-en */
 
 import * as core from '@actions/core'
 import CerberusClient from 'cerberus-node-client'

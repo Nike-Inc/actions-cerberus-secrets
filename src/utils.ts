@@ -7,6 +7,8 @@
  *
  */
 
+/* eslint-disable i18n-text/no-en */
+
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
 
