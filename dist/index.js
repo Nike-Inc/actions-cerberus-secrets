@@ -57,6 +57,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 /* eslint-disable github/no-then */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable i18n-text/no-en */
 const core = __importStar(__nccwpck_require__(2186));
 const cerberus_node_client_1 = __importDefault(__nccwpck_require__(2073));
 class Cerberus {
@@ -141,6 +142,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+/* eslint-disable i18n-text/no-en */
 const core = __importStar(__nccwpck_require__(2186));
 const cerberus_1 = __importDefault(__nccwpck_require__(9306));
 const utils_1 = __nccwpck_require__(918);
@@ -216,6 +218,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getRunnerRegion = void 0;
+/* eslint-disable i18n-text/no-en */
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
 function getRunnerRegion(defaultRegion = '') {
@@ -12772,7 +12775,7 @@ module.exports = {
 
 const { defaultProvider: fetchAwsCredentials } = __nccwpck_require__(5531)
 const { getDefaultRoleAssumerWithWebIdentity } = __nccwpck_require__(2209)
-const { fromTokenFile } = __nccwpck_require__(5646)
+const { fromTokenFile } = __nccwpck_require__(8568)
 const crypto = __nccwpck_require__(6417)
 
 const CHINA_REGIONS = ['cn-north-1', 'cn-northwest-1']
@@ -12881,6 +12884,84 @@ const getAuthenticationHeaders = async (region) => {
 module.exports = {
   getAuthenticationHeaders: getAuthenticationHeaders
 }
+
+
+/***/ }),
+
+/***/ 5846:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.fromTokenFile = void 0;
+const property_provider_1 = __nccwpck_require__(4462);
+const fs_1 = __nccwpck_require__(5747);
+const fromWebToken_1 = __nccwpck_require__(3757);
+const ENV_TOKEN_FILE = "AWS_WEB_IDENTITY_TOKEN_FILE";
+const ENV_ROLE_ARN = "AWS_ROLE_ARN";
+const ENV_ROLE_SESSION_NAME = "AWS_ROLE_SESSION_NAME";
+const fromTokenFile = (init = {}) => async () => {
+    return resolveTokenFile(init);
+};
+exports.fromTokenFile = fromTokenFile;
+const resolveTokenFile = (init) => {
+    var _a, _b, _c;
+    const webIdentityTokenFile = (_a = init === null || init === void 0 ? void 0 : init.webIdentityTokenFile) !== null && _a !== void 0 ? _a : process.env[ENV_TOKEN_FILE];
+    const roleArn = (_b = init === null || init === void 0 ? void 0 : init.roleArn) !== null && _b !== void 0 ? _b : process.env[ENV_ROLE_ARN];
+    const roleSessionName = (_c = init === null || init === void 0 ? void 0 : init.roleSessionName) !== null && _c !== void 0 ? _c : process.env[ENV_ROLE_SESSION_NAME];
+    if (!webIdentityTokenFile || !roleArn) {
+        throw new property_provider_1.CredentialsProviderError("Web identity configuration not specified");
+    }
+    return fromWebToken_1.fromWebToken({
+        ...init,
+        webIdentityToken: fs_1.readFileSync(webIdentityTokenFile, { encoding: "ascii" }),
+        roleArn,
+        roleSessionName,
+    })();
+};
+
+
+/***/ }),
+
+/***/ 3757:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.fromWebToken = void 0;
+const property_provider_1 = __nccwpck_require__(4462);
+const fromWebToken = (init) => () => {
+    const { roleArn, roleSessionName, webIdentityToken, providerId, policyArns, policy, durationSeconds, roleAssumerWithWebIdentity, } = init;
+    if (!roleAssumerWithWebIdentity) {
+        throw new property_provider_1.CredentialsProviderError(`Role Arn '${roleArn}' needs to be assumed with web identity,` +
+            ` but no role assumption callback was provided.`, false);
+    }
+    return roleAssumerWithWebIdentity({
+        RoleArn: roleArn,
+        RoleSessionName: roleSessionName !== null && roleSessionName !== void 0 ? roleSessionName : `aws-sdk-js-session-${Date.now()}`,
+        WebIdentityToken: webIdentityToken,
+        ProviderId: providerId,
+        PolicyArns: policyArns,
+        Policy: policy,
+        DurationSeconds: durationSeconds,
+    });
+};
+exports.fromWebToken = fromWebToken;
+
+
+/***/ }),
+
+/***/ 8568:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const tslib_1 = __nccwpck_require__(4351);
+tslib_1.__exportStar(__nccwpck_require__(5846), exports);
+tslib_1.__exportStar(__nccwpck_require__(3757), exports);
 
 
 /***/ }),
@@ -17686,7 +17767,7 @@ module.exports = eval("require")("aws-crt");
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"cerberus-node-client","version":"3.4.1","description":"Node client for Cerberus Key Mgmt","main":"index.js","types":"index.d.ts","scripts":{"test":"npm run style && npm run test:unit:local","test:all":"npm run style && npm run test:unit:local && npm run test:integration","test:unit:ci-report-coverage":"jest test/ --coverage --coverageReporters=text-lcov --collectCoverageFrom=lib/**/*.js --collectCoverageFrom=index.js --collectCoverageFrom=!lib/sts.js | coveralls","test:unit:local":"jest test/ --coverage --collectCoverageFrom=lib/**/*.js --collectCoverageFrom=index.js --collectCoverageFrom=!lib/sts.js","test:integration":"PROJECT_DIR=$(pwd) jest integration/","style":"standard \\"index.js\\" \\"test/**/*.js\\" | snazzy","style:fix":"standard \\"index.js\\" \\"test/**/*.js\\" --fix","generate-docs":"./scripts/generate-docs.sh","deploy-docs":"gh-pages -d build/docs","travis-deploy-github-pages":"gh-pages -r \\"https://${GH_TOKEN}@github.com/Nike-Inc/cerberus-node-client.git\\" -d build/docs"},"repository":{"type":"git","url":"https://github.com/Nike-Inc/cerberus-node-client.git"},"keywords":["nike","cerberus"],"files":["index.js","index.d.ts","lib"],"engines":{"node":">=4.0.0"},"author":"Tim Kye","license":"Apache-2.0","standard":{"parser":"babel-eslint","env":"jest"},"dependencies":{"@aws-sdk/credential-provider-node":"^3.40.0","@aws-sdk/client-sts":"^3.40.0","exponential-backoff":"^3.1.0","form-data":"^3.0.0","request-micro":"^1.5.1","url-join":"^4.0.1"},"devDependencies":{"babel-eslint":"^10.1.0","coveralls":"^3.1.0","eslint":"^7.3.1","gh-pages":"^3.1.0","ink-docstrap":"^1.3.2","jest":"^26.6.3","jest-mock-console":"^1.0.1","jsdoc":"^3.6.4","minimist":"^1.2.5","nyc":"^15.1.0","snazzy":"^8.0.0","standard":"^14.3.4","tap-spec":"^5.0.0","uuid":"^8.2.0"}}');
+module.exports = JSON.parse('{"name":"cerberus-node-client","version":"3.4.2","description":"Node client for Cerberus Key Mgmt","main":"index.js","types":"index.d.ts","scripts":{"test":"npm run style && npm run test:unit:local","test:all":"npm run style && npm run test:unit:local && npm run test:integration","test:unit:ci-report-coverage":"jest test/ --coverage --coverageReporters=text-lcov --collectCoverageFrom=lib/**/*.js --collectCoverageFrom=index.js --collectCoverageFrom=!lib/sts.js | coveralls","test:unit:local":"jest test/ --coverage --collectCoverageFrom=lib/**/*.js --collectCoverageFrom=index.js --collectCoverageFrom=!lib/sts.js","test:integration":"PROJECT_DIR=$(pwd) jest integration/","style":"standard \\"index.js\\" \\"test/**/*.js\\" | snazzy","style:fix":"standard \\"index.js\\" \\"test/**/*.js\\" --fix","generate-docs":"./scripts/generate-docs.sh","deploy-docs":"gh-pages -d build/docs","travis-deploy-github-pages":"gh-pages -r \\"https://${GH_TOKEN}@github.com/Nike-Inc/cerberus-node-client.git\\" -d build/docs"},"repository":{"type":"git","url":"https://github.com/Nike-Inc/cerberus-node-client.git"},"keywords":["nike","cerberus"],"files":["index.js","index.d.ts","lib"],"engines":{"node":">=4.0.0"},"author":"Tim Kye","license":"Apache-2.0","standard":{"parser":"babel-eslint","env":"jest"},"dependencies":{"@aws-sdk/client-sts":"^3.40.0","@aws-sdk/credential-provider-node":"^3.40.0","@aws-sdk/credential-provider-web-identity":"^3.41.0","exponential-backoff":"^3.1.0","form-data":"^3.0.0","request-micro":"^1.5.1","url-join":"^4.0.1"},"devDependencies":{"babel-eslint":"^10.1.0","coveralls":"^3.1.0","eslint":"^7.3.1","gh-pages":"^3.1.0","ink-docstrap":"^1.3.2","jest":"^26.6.3","jest-mock-console":"^1.0.1","jsdoc":"^3.6.4","minimist":"^1.2.5","nyc":"^15.1.0","snazzy":"^8.0.0","standard":"^14.3.4","tap-spec":"^5.0.0","uuid":"^8.2.0"}}');
 
 /***/ }),
 
