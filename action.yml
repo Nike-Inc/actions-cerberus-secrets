@@ -15,5 +15,5 @@ inputs:
     required: true
     description: 'Cerberus SDB keys and target environment variable names eg: [{"id": "ID", "name": "NAME", "url": "URL"}]'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
